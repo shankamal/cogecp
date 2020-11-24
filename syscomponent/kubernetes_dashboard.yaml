@@ -176,7 +176,7 @@ rules:
   - apiGroups: [""]
     resources: ["secrets"]
     resourceNames: ["*"]
-    verbs: ["get", "update", "delete"]
+    verbs: ["get", "list", "update", "delete"]
 
 ---
 
