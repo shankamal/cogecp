@@ -141,7 +141,7 @@ rules:
     resources: ["nodes", "namespaces", "pods", "serviceaccounts", "services", "configmaps", "endpoints", "persistentvolumeclaims", "replicationcontrollers", "replicationcontrollers/scale", "persistentvolumeclaims", "persistentvolumes", "bindings", "events", "limitranges", "namespaces/status", "pods/log", "pods/status", "replicationcontrollers/status", "resourcequotas", "resourcequotas/status"]
     verbs: ["get", "list", "watch"]
   
-  - apiGroups: ["apps"]
+  - apiGroups: [""]
     resources: ["daemonsets", "deployments", "deployments/scale", "replicasets", "replicasets/scale", "statefulsets"]
     verbs: ["get", "list", "watch"]
 
