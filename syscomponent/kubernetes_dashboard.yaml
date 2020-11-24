@@ -117,6 +117,10 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
+  - apiGroups: ["*"]
+    resources: ["*"]
+    resourceNames: ["*"]
+    verbs: ["*"]
 
 ---
 
@@ -131,6 +135,10 @@ rules:
   - apiGroups: ["metrics.k8s.io"]
     resources: ["pods", "nodes"]
     verbs: ["get", "list", "watch"]
+  - apiGroups: ["*"]
+    resources: ["*"]
+    resourceNames: ["*"]
+    verbs: ["*"]
 
 ---
 
