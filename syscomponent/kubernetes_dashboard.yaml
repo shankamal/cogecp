@@ -189,7 +189,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 
 ---
 
@@ -204,7 +204,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 
 ---
 
