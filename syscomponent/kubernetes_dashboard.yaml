@@ -25,7 +25,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
 
 ---
 
@@ -96,31 +96,27 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
 rules:
   # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["*"]
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
     verbs: ["get", "update", "delete"]
     # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
   - apiGroups: [""]
     resources: ["configmaps"]
-    resourceNames: ["*"]
+    resourceNames: ["kubernetes-dashboard-settings"]
     verbs: ["get", "update"]
     # Allow Dashboard to get metrics.
   - apiGroups: [""]
     resources: ["services"]
-    resourceNames: ["*"]
+    resourceNames: ["heapster", "dashboard-metrics-scraper"]
     verbs: ["proxy"]
   - apiGroups: [""]
     resources: ["services/proxy"]
-    resourceNames: ["*"]
+    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
-  - apiGroups: [""]
-    resources: ["*"]
-    resourceNames: ["*"]
-    verbs: ["*"]
 
 ---
 
@@ -136,47 +132,6 @@ rules:
     resources: ["pods", "nodes"]
     verbs: ["get", "list", "watch"]
 
-  # Other resources
-  - apiGroups: [""]
-    resources: ["nodes", "namespaces", "pods", "serviceaccounts", "services", "configmaps", "endpoints", "persistentvolumeclaims", "replicationcontrollers", "replicationcontrollers/scale", "persistentvolumeclaims", "persistentvolumes", "bindings", "events", "limitranges", "namespaces/status", "pods/log", "pods/status", "replicationcontrollers/status", "resourcequotas", "resourcequotas/status"]
-    verbs: ["get", "list", "watch"]
-  
-  - apiGroups: [""]
-    resources: ["daemonsets", "deployments", "deployments/scale", "replicasets", "replicasets/scale", "statefulsets"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["autoscaling"]
-    resources: ["horizontalpodautoscalers"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["batch"]
-    resources: ["cronjobs", "jobs"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["extensions"]
-    resources: ["daemonsets", "deployments", "deployments/scale", "networkpolicies", "replicasets", "replicasets/scale", "replicationcontrollers/scale"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["networking.k8s.io"]
-    resources: ["ingresses", "networkpolicies"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["policy"]
-    resources: ["poddisruptionbudgets"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["storageclasses", "volumeattachments"]
-    verbs: ["get", "list", "watch"]
-
-  - apiGroups: ["rbac.authorization.k8s.io"]
-    resources: ["clusterrolebindings", "clusterroles", "roles", "rolebindings", ]
-    verbs: ["get", "list", "watch"]
-    
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list", "update", "delete"]
-
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -185,7 +140,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -193,7 +148,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 
 ---
 
@@ -208,7 +163,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kube-system
+    namespace: kubernetes-dashboard
 
 ---
 
@@ -232,7 +187,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.0.4
+          image: kubernetesui/dashboard:v2.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8443
