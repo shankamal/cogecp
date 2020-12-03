@@ -20,6 +20,13 @@ metadata:
 ---
 
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: systemcomponent
+
+---
+
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
